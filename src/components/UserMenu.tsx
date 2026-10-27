@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, LogOut } from "lucide-react";
 
@@ -35,7 +36,13 @@ export function UserMenu({ name, email, plan, fee, demo }: Props) {
             <span className="font-semibold">Taxa {fee}%</span>
           </div>
           <ul className="mt-3 space-y-1 text-sm text-zinc-700">
-            {["Configurações", "Meu site", "Estatísticas", "Materiais de apoio"].map((item) => (
+            <li>
+              <Link href="/painel/configuracoes" onClick={() => setAberto(false)}
+                className="flex justify-between rounded-md px-2 py-1.5 font-medium hover:bg-zinc-50">
+                Configurações <span className="text-zinc-400">›</span>
+              </Link>
+            </li>
+            {["Meu site", "Estatísticas", "Materiais de apoio"].map((item) => (
               <li key={item} className="flex justify-between rounded-md px-2 py-1.5 hover:bg-zinc-50">
                 {item} <span className="text-xs text-zinc-400">em breve</span>
               </li>

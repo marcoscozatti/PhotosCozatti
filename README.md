@@ -12,10 +12,16 @@ Plataforma para fotógrafos venderem fotos de eventos. O cliente encontra as pr�
 - Financeiro: saldo, vendas, gráfico de 30 dias e pedido de saque via Pix
 - Sem Supabase configurado, o site abre em **modo demonstração** com dados de exemplo
 
+## Etapa 2 (fotos e link do cliente)
+- Upload de várias fotos de uma vez, com marca d'água automática (feita no navegador)
+- Página do álbum no painel: enviar, ver e apagar fotos, copiar o link e enviar no WhatsApp
+- Página pública `/a/<id do álbum>`: o cliente vê as fotos, amplia, seleciona e pede pelo WhatsApp
+- Configurações: nome, WhatsApp, Instagram e cidade do fotógrafo
+- **Requer rodar `supabase/etapa2.sql` no SQL Editor do Supabase**
+
 ## Próximas etapas
-2. Upload de fotos com marca d'água automática
-3. Página pública do álbum para o cliente + busca por selfie (reconhecimento facial)
-4. Carrinho e pagamento (Pix/cartão) com repasse ao fotógrafo
+3. Busca por selfie (reconhecimento facial)
+4. Carrinho e pagamento (Pix/cartão) com repasse ao fotógrafo e download do original
 
 ## Como configurar
 

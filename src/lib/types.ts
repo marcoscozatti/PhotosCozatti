@@ -5,6 +5,9 @@ export type Profile = {
   plan: "free" | "pro";
   fee_percent: number;
   fee_customer_share: number;
+  whatsapp?: string | null;
+  instagram?: string | null;
+  city?: string | null;
 };
 
 export type Album = {

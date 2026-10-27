@@ -73,13 +73,14 @@ export default async function AlbunsPage({ searchParams }: Props) {
                   <th className="font-medium">Fotos vendidas</th>
                   <th className="font-medium">Tipo</th>
                   <th className="font-medium">Status</th>
+                  <th />
                 </tr>
               </thead>
               <tbody>
                 {albuns.map((a) => (
                   <tr key={a.id} className="border-b border-zinc-50">
                     <td className="py-3">
-                      <p className="font-semibold">{a.title}</p>
+                      <Link href={`/painel/albuns/${a.id}`} className="font-semibold hover:text-brand-600">{a.title}</Link>
                       <p className="text-xs text-zinc-500">{a.city} · {a.category} · {brl(Number(a.price_per_photo))}/foto</p>
                     </td>
                     <td>{dataLonga(a.album_date + "T12:00:00")}</td>
@@ -88,6 +89,11 @@ export default async function AlbunsPage({ searchParams }: Props) {
                     <td>{a.photos_sold ?? 0}</td>
                     <td><span className="rounded-md bg-zinc-900 px-2 py-1 text-xs font-semibold text-white">{VISIBILIDADE[a.visibility]}</span></td>
                     <td><span className="rounded-md bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">● {STATUS[a.status]}</span></td>
+                    <td className="text-right">
+                      <Link href={`/painel/albuns/${a.id}`} className="rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-semibold text-ink">
+                        Fotos e link
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>

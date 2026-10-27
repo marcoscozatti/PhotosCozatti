@@ -15,7 +15,7 @@ async function exigirLogin(voltarPara: string) {
 
 export async function criarAlbum(form: FormData) {
   const { supabase, user } = await exigirLogin("/painel/albuns");
-  const { error } = await supabase.from("albums").insert({
+  const { data: novo, error } = await supabase.from("albums").insert({
     owner_id: user.id,
     title: texto(form, "title"),
     city: texto(form, "city") || null,
@@ -23,10 +23,10 @@ export async function criarAlbum(form: FormData) {
     visibility: texto(form, "visibility") || "listed",
     price_per_photo: Number(texto(form, "price").replace(",", ".")) || 15,
     album_date: texto(form, "date") || undefined,
-  });
+  }).select("id").single();
   if (error) redirect(`/painel/albuns?erro=${encodeURIComponent(error.message)}`);
   revalidatePath("/painel", "layout");
-  redirect("/painel/albuns");
+  redirect(`/painel/albuns/${novo.id}`);
 }
 
 export async function criarEvento(form: FormData) {
@@ -68,4 +68,34 @@ export async function solicitarSaque(form: FormData) {
   if (error) redirect(`/painel/financeiro?erro=${encodeURIComponent(error.message)}`);
   revalidatePath("/painel", "layout");
   redirect("/painel/financeiro?ok=1");
+}
+
+export async function apagarFoto(form: FormData) {
+  const { supabase } = await exigirLogin("/painel/albuns");
+  const id = texto(form, "photo_id");
+  const albumId = texto(form, "album_id");
+  const { data: foto } = await supabase.from("photos").select("storage_path, preview_path").eq("id", id).single();
+  if (foto) {
+    await supabase.storage.from("originais").remove([foto.storage_path]);
+    if (foto.preview_path) await supabase.storage.from("previews").remove([foto.preview_path]);
+    await supabase.from("photos").delete().eq("id", id);
+  }
+  revalidatePath(`/painel/albuns/${albumId}`);
+}
+
+export async function salvarPerfil(form: FormData) {
+  const { supabase, user } = await exigirLogin("/painel/configuracoes");
+  const whatsapp = texto(form, "whatsapp").replace(/\D/g, "");
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name: texto(form, "full_name") || null,
+      whatsapp: whatsapp ? (whatsapp.startsWith("55") ? whatsapp : `55${whatsapp}`) : null,
+      instagram: texto(form, "instagram").replace(/^@/, "") || null,
+      city: texto(form, "city") || null,
+    })
+    .eq("id", user.id);
+  if (error) redirect(`/painel/configuracoes?erro=${encodeURIComponent(error.message)}`);
+  revalidatePath("/painel", "layout");
+  redirect(`/painel/configuracoes?ok=1`);
 }
