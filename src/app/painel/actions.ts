@@ -59,7 +59,7 @@ export async function solicitarSaque(form: FormData) {
   const { supabase, user } = await exigirLogin("/painel/financeiro");
   const valor = Number(texto(form, "amount").replace(",", "."));
   const { saldo } = await getFinance();
-  if (!(valor > 0) || valor > saldo) redirect("/painel/financeiro?erro=Valor maior que o saldo disponível");
+  if (!(valor > 0) || valor > saldo) redirect(`/painel/financeiro?erro=${encodeURIComponent("Valor maior que o saldo disponível")}`);
   const { error } = await supabase.from("withdrawals").insert({
     photographer_id: user.id,
     amount: valor,

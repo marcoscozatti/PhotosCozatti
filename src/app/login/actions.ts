@@ -39,6 +39,6 @@ export async function cadastrar(form: FormData) {
       : error.message;
     redirect(`/login?modo=cadastro&erro=${encodeURIComponent(msg)}`);
   }
-  if (!data.session) redirect("/login?ok=Enviamos um e-mail de confirmação. Confirme e depois entre.");
+  if (!data.session) redirect(`/login?ok=${encodeURIComponent("Conta criada! Enviamos um e-mail de confirmação. Clique no link do e-mail e depois entre.")}`);
   redirect("/painel");
 }
