@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/Sidebar";
 import { btnPrimary, input } from "@/components/ui";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { isSupabaseConfigured, supabaseConfigError } from "@/lib/supabase/config";
 import { cadastrar, entrar } from "./actions";
 
 type Props = { searchParams: Promise<{ modo?: string; erro?: string; ok?: string }> };
@@ -19,7 +19,10 @@ export default async function LoginPage({ searchParams }: Props) {
           {cadastro ? "Grátis. Comece a vender suas fotos hoje." : "Bem-vindo de volta."}
         </p>
 
-        {!isSupabaseConfigured && (
+        {supabaseConfigError && (
+          <p className="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{supabaseConfigError}</p>
+        )}
+        {!isSupabaseConfigured && !supabaseConfigError && (
           <p className="mt-6 rounded-lg bg-brand-100 px-4 py-3 text-sm text-amber-900">
             Modo demonstração: qualquer e-mail e senha abrem o painel com dados de exemplo.
           </p>
