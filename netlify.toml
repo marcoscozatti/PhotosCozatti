@@ -1,3 +1,8 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+# As chaves NEXT_PUBLIC_* do Supabase são públicas por natureza (vão para o navegador).
+# A segurança dos dados vem das regras RLS do banco, não do sigilo dessas chaves.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_SUPABASE_URL"
