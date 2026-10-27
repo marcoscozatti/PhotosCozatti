@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { Sidebar } from "@/components/Sidebar";
 import { UserMenu } from "@/components/UserMenu";
 import { getProfile } from "@/lib/data";
+import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseConfigError } from "@/lib/supabase/config";
 
 export default async function PainelLayout({ children }: { children: React.ReactNode }) {
   const { profile, email, demo } = await getProfile();
@@ -11,7 +12,10 @@ export default async function PainelLayout({ children }: { children: React.React
       <Sidebar />
       {demo && (
         <div className="bg-brand-100 px-4 py-2 text-center text-sm text-amber-900">
-          Modo demonstração: os dados são de exemplo. Configure o Supabase para usar de verdade.
+          {supabaseConfigError ??
+            (!SUPABASE_URL || !SUPABASE_ANON_KEY
+              ? "Modo demonstração: as chaves do Supabase não chegaram ao site. Confira as variáveis na Netlify e refaça o deploy."
+              : "Modo demonstração: os dados são de exemplo.")}
         </div>
       )}
       <header className="flex items-center justify-end gap-3 px-4 py-4 sm:px-8">
